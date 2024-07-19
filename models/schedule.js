@@ -2,15 +2,27 @@ import mongoose from '../config/database.js'
 
 const { Schema, model } = mongoose
 
+const shiftSchema = new Schema(
+  {
+    start: Date,
+    end: Date,
+    role: String,
+    location: String,
+    notes: String
+  },
+  { _id: false }
+)
+
 const scheduleSchema = new Schema(
   {
-    department: { type: String, unique: true },
-    badgeName: { type: String, unique: true },
-    
+    event: String,
+    department: String,
+    badgeName: String,
+    shifts: [shiftSchema]
   },
   { timestamps: true }
 )
 
-const User = model('Schedule', userSchema)
+const Schedule = model('Schedule', scheduleSchema)
 
-export default User
+export default Schedule
