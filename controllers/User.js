@@ -19,7 +19,7 @@ const router = express.Router()
 const SECRET = process.env.SECRET || ''
 
 const frontendUrl = 'http://localhost:5173'
-const siteName = 'Syllabuilder'
+const siteName = 'Office Manager'
 const borderColor = '#9DD9F3'
 const cornerColor = '#77C3EC'
 
@@ -136,8 +136,7 @@ router.post('/login', async (request, response) => {
 
     // If user exists checks for password
     if (userObject) {
-      //"userObject.isVerified" taken out until emails work again
-      if (true) {
+      if (userObject.isVerified) {
         const passwordCheck = await bcrypt.compare(
           password,
           userObject.password

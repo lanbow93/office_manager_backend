@@ -17,6 +17,7 @@ const scheduleSchema = new Schema(
   {
     event: String,
     department: String,
+    hoursNeeded: Number,
     badgeName: String,
     shifts: [shiftSchema]
   },
