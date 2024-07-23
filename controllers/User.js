@@ -25,7 +25,7 @@ const cornerColor = '#77C3EC'
 
 /*
 Purpose: Creates a new user
-Needed: username | password | email |
+Needed: username | firstName | lastName | password | email |
 */
 router.post('/signup', async (request, response) => {
   try {
@@ -39,7 +39,8 @@ router.post('/signup', async (request, response) => {
 
     const userObject = {
       username: request.body.username.toLowerCase().trim(),
-      badgeName: request.body.username.trim(),
+      firstName: request.body.firstName.toLowerCase().trim(),
+      lastName: request.body.lastName.toLowerCase().trim(),
       password: request.body.password,
       email: request.body.email.toLowerCase().trim(),
       verificationToken,
