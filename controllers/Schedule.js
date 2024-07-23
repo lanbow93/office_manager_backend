@@ -15,6 +15,7 @@ router.post('/', async (request, response) => {
     try{
         const newSchedule = {
             eventName: request.body.eventName.toLowerCase().trim(),
+            company: request.body.company.toLowerCase().trim(),
             department: request.body.department.toLowerCase().trim(),
             hoursNeeded: request.body.hoursNeeded,
             username: request.body.username.toLowerCase().trim(),
@@ -32,6 +33,24 @@ Purpose: Finds all schedules based on department
 Needed: :id = department name {ALL LOWERCASE}
 */
 
+router.get('/department/:id', async (request, response) => {
+    try{
+        const schedules = await Schedule.find({department: request.params.id})
+        if (schedules.length === 0) { 
+            throw new Error("No schedules found for the department");
+        }
+        successfulRequest(response, "Success", "Successful Search", schedules )
+
+    }catch(error){
+        failedRequest(response, "Failed Search", "Unable To Locate Department", error)
+    }
+})
+
+
+/*
+Purpose: Finds all schedules based on department
+Needed: :id = department name {ALL LOWERCASE}
+*/
 router.get('/department/:id', async (request, response) => {
     try{
         const schedules = await Schedule.find({department: request.params.id})
