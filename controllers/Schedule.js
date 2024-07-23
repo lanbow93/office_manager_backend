@@ -27,4 +27,23 @@ router.post('/', async (request, response) => {
     }
 })
 
+/*
+Purpose: Finds all schedules based on department
+Needed: :id = department name {ALL LOWERCASE}
+*/
+
+router.get('/department/:id', async (request, response) => {
+    try{
+        const schedules = await Schedule.find({department: request.params.id})
+        if (schedules.length === 0) { 
+            throw new Error("No schedules found for the department");
+        }
+        successfulRequest(response, "Success", "Successful Search", schedules )
+
+    }catch(error){
+        failedRequest(response, "Failed Search", "Unable To Locate Department", error)
+    }
+})
+
+
 export default router
