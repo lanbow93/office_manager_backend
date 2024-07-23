@@ -15,10 +15,10 @@ const shiftSchema = new Schema(
 
 const scheduleSchema = new Schema(
   {
-    event: String,
+    eventName: String,
     department: String,
     hoursNeeded: Number,
-    badgeName: String,
+    username: String,
     shifts: [shiftSchema]
   },
   { timestamps: true }
