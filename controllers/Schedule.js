@@ -48,19 +48,19 @@ router.get('/department/:id', async (request, response) => {
 
 
 /*
-Purpose: Finds all schedules based on department
-Needed: :id = department name {ALL LOWERCASE}
+Purpose: Finds all schedules based on username
+Needed: :id = username {ALL LOWERCASE}
 */
-router.get('/department/:id', async (request, response) => {
+router.get('/user/:id', async (request, response) => {
     try{
-        const schedules = await Schedule.find({department: request.params.id})
+        const schedules = await Schedule.find({username: request.params.id})
         if (schedules.length === 0) { 
-            throw new Error("No schedules found for the department");
+            throw new Error(`No schedules found for the ${request.params.id}`);
         }
         successfulRequest(response, "Success", "Successful Search", schedules )
 
     }catch(error){
-        failedRequest(response, "Failed Search", "Unable To Locate Department", error)
+        failedRequest(response, "Failed Search", "Unable To Locate User", error)
     }
 })
 
