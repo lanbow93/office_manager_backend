@@ -1,4 +1,4 @@
-export function forgotPasswordEmailGenerator (
+export function forgotPasswordEmailGenerator(
   frontendUrl,
   verificationString,
   siteName,
@@ -316,7 +316,7 @@ export function forgotPasswordEmailGenerator (
 </table>`
 }
 
-export function verifyEmailGenerator (
+export function verifyEmailGenerator(
   verificationLink,
   siteName,
   borderColor,

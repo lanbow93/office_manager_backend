@@ -2,25 +2,13 @@ import mongoose from '../config/database.js'
 
 const { Schema, model } = mongoose
 
-const shiftSchema = new Schema(
-  {
-    start: Date,
-    end: Date,
-    role: String,
-    location: String,
-    notes: String
-  },
-  { _id: false }
-)
-
 const scheduleSchema = new Schema(
   {
     eventName: String,
     company: String,
     department: String,
     hoursNeeded: Number,
-    username: String,
-    shifts: [shiftSchema]
+    shifts: [{ type: Schema.Types.ObjectId, ref: 'Shift' }]
   },
   { timestamps: true }
 )

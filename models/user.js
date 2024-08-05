@@ -2,6 +2,15 @@ import mongoose from '../config/database.js'
 
 const { Schema, model } = mongoose
 
+const unavailableSchema = new Schema(
+  {
+    start: Date,
+    end: Date,
+    reason: String
+  },
+  { _id: false }
+)
+
 const userSchema = new Schema(
   {
     username: { type: String, unique: true },
@@ -14,7 +23,8 @@ const userSchema = new Schema(
     isVerified: { type: Boolean, default: false, required: true },
     adminOf: [String],
     resetToken: String,
-    resetTokenExpiry: Date
+    resetTokenExpiry: Date,
+    unavailableHours: [unavailableSchema]
   },
   { timestamps: true }
 )

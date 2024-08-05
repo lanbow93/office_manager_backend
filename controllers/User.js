@@ -6,6 +6,8 @@ import sgMail from '@sendgrid/mail'
 import crypto from 'crypto'
 // Model & Type Imports
 import User from '../models/user.js'
+import Shift from '../models/shift.js'
+import Assignment from '../models/assignment.js'
 
 import { successfulRequest, failedRequest } from '../utils/SharedFunctions.js'
 import { userLoggedIn } from '../utils/UserVerified.js'
@@ -46,7 +48,8 @@ router.post('/signup', async (request, response) => {
       verificationToken,
       isVerified: false,
       resetToken: '',
-      resetTokenExpiry: new Date()
+      resetTokenExpiry: new Date(),
+      unavailableHours: []
     }
     const user = await User.create(userObject)
     // Send verification email
@@ -78,9 +81,6 @@ router.post('/signup', async (request, response) => {
     console.log(error)
     let message =
       'Unknown Error. Please Try Again. If issue persists contact Webmaster.'
-    if (error.keyPattern.badgeName) {
-      message = 'Badge Name Already Exists'
-    }
     if (error.keyPattern.email) {
       message = 'Email Already Exists'
     }
@@ -156,7 +156,7 @@ router.post('/login', async (request, response) => {
             .json({
               status: 'Logged In',
               message: 'Successfully Logged In',
-              data: userObject.badgeName
+              data: userObject.username
             })
         } else {
           failedRequest(
@@ -258,7 +258,7 @@ router.put('/forgotpassword/:id', async (request, response) => {
       const timeDifference = Math.abs(
         new Date().getTime() - user.resetTokenExpiry.getTime()
       ) // Difference in milliseconds
-      const tenMinutesInMilliseconds = 10 * 60 * 1000 // 5 minutes in milliseconds
+      const tenMinutesInMilliseconds = 10 * 60 * 1000 // 10 minutes in milliseconds
       const isMoreThanTenMinutes = timeDifference > tenMinutesInMilliseconds
       if (user.resetToken === request.params.id) {
         if (!isMoreThanTenMinutes) {
@@ -268,7 +268,9 @@ router.put('/forgotpassword/:id', async (request, response) => {
             await bcrypt.genSalt(10)
           )
           user.password = request.body.password
-          const newUser = await User.findOneAndUpdate({ username }, user)
+          const newUser = await User.findOneAndUpdate({ username }, user, {
+            new: true
+          })
           newUser.password = '**********'
           successfulRequest(
             response,
